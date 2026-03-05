@@ -41,7 +41,7 @@ ASHA (Accredited Social Health Activist) workers, hospitals, and administrators 
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amangupta9454/maacare/main/assets/system_architecture.png" alt="System Architecture Diagram" width="100%">
+  <img src="https://res.cloudinary.com/dgtyqhtor/image/upload/v1772701093/system_architecture_emsljr.png" alt="System Architecture Diagram" width="100%">
 </p>
 
 <p><b>A mother can use MaaCare to:</b></p>
@@ -63,7 +63,7 @@ ASHA (Accredited Social Health Activist) workers, hospitals, and administrators 
 <h2 id="who-its-for" style="color:#fd7e14;">👥 Who It's For</h2>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amangupta9454/maacare/main/assets/role_matrix.png" alt="Role Matrix Mapping" width="100%">
+  <img src="https://res.cloudinary.com/dgtyqhtor/image/upload/v1772701091/role_matrix_dhh8pc.png" width="100%">
 </p>
 
 <table style="border-collapse: collapse; width:100%; text-align:left;">
@@ -1127,7 +1127,7 @@ Example: <code>http://localhost:5000/api</code>
 
 <h3 style="color:#6f42c1;">🏥 Hospital Booking Flow</h3>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amangupta9454/maacare/main/assets/hospital_booking_flow.png" alt="Hospital Booking Flow Diagram" width="100%">
+  <img src="https://res.cloudinary.com/dgtyqhtor/image/upload/v1772701091/hospital_booking_flow_zbnyws.png" alt="Hospital Booking Flow Diagram" width="100%">
 </p>
 
 <h3 style="color:#6f42c1;">🛡️ Insurance at Booking</h3>
@@ -1140,7 +1140,7 @@ The selected policy ID and cost are saved with the booking record.
 <h3 style="color:#6f42c1;">📇 Digital Health Passport + QR</h3>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amangupta9454/maacare/main/assets/health_passport_qr.png" alt="Digital Health Passport generation" width="100%">
+  <img src="https://res.cloudinary.com/dgtyqhtor/image/upload/v1772701092/health_passport_qr_wwurj5.png" alt="Digital Health Passport generation" width="100%">
 </p>
 
 <li>
@@ -1157,7 +1157,7 @@ without needing internet access to a database.
 <h3 style="color:#6f42c1;">🚨 Emergency SOS</h3>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/amangupta9454/maacare/main/assets/sos_flow.png" alt="Emergency SOS Activation Flow" width="100%">
+  <img src="https://res.cloudinary.com/dgtyqhtor/image/upload/v1772701093/sos_flow_knjdja.png" alt="Emergency SOS Activation Flow" width="100%">
 </p>
 
 <li>
