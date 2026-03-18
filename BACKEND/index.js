@@ -59,7 +59,7 @@ require('./utils/reminderScheduler').scheduleReminders();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet({ crossOriginResourcePolicy: false }));
-app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
+app.use(cors("*"));
 
 // Socket.io Setup
 const io = new Server(server, {
