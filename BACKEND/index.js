@@ -49,6 +49,17 @@ const server = http.createServer(app);
 // Connect to MongoDB
 connectDB();
 
+// Ensure DB is connected before handling any requests (Crucial for Vercel Serverless)
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error('Database Connection Error:', error);
+        res.status(500).json({ message: 'Internal Server Error: Database connection failed' });
+    }
+});
+
 // Start daily notification scheduler (graceful — skips if node-cron not installed)
 startScheduler();
 
