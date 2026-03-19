@@ -15,7 +15,9 @@ const DietPlanner = () => {
                 });
                 setPlan(res.data);
             } catch (error) {
-                console.error("Error fetching diet plan", error);
+                if (error.response && error.response.status !== 404) {
+                    console.error("Error fetching diet plan", error);
+                }
             } finally {
                 setLoading(false);
             }

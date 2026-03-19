@@ -36,7 +36,7 @@ exports.getTodayPlan = async (req, res) => {
         // Generate auto-plan if none exists for today
         if (!plan) {
             const profile = await PregnancyProfile.findOne({ mother: req.user._id });
-            if (!profile) return res.status(404).json({ message: 'Pregnancy profile not found. Complete your profile first.' });
+            if (!profile) return res.status(200).json(null);
 
             const template = getDietTemplate(profile);
             const meals = Object.keys(template).map(cat => ({
