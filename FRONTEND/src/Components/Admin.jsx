@@ -10,10 +10,10 @@ import {
 
 const StatCard = ({ icon, label, value, color }) => (
   <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-    className="glass-card p-6 flex items-center justify-between">
+    className="glass-card p-6 flex items-center justify-between border border-sky-200 bg-white/90">
     <div>
-      <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{label}</p>
-      <h3 className="text-3xl font-extrabold text-white">{value ?? '—'}</h3>
+      <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">{label}</p>
+      <h3 className="text-3xl font-black text-slate-900">{value ?? '—'}</h3>
     </div>
     <div className={`p-4 rounded-2xl ${color}`}>{icon}</div>
   </motion.div>
@@ -163,45 +163,45 @@ const Admin = () => {
   return (
     <div className="max-w-7xl mx-auto py-10 px-4 space-y-12">
 
-      {/* ── ADMIN IDENTITY CARD ── */}
+      {/* ── HEADER ── */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-7 flex flex-col md:flex-row items-start md:items-center gap-6">
-        <div className="bg-teal-500/20 border border-teal-500/30 p-5 rounded-2xl">
-          <Shield size={36} className="text-teal-400" />
+        className="glass-card-elevated p-6 mb-8 border border-sky-200 bg-white/95 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div className="w-16 h-16 rounded-2xl bg-sky-100 border border-sky-300 flex items-center justify-center shrink-0">
+          <Shield size={36} className="text-sky-700" />
         </div>
         <div className="flex-1">
-          <span className="text-xs font-bold uppercase tracking-widest text-teal-400 bg-teal-500/10 border border-teal-500/20 px-3 py-1 rounded-full">
+          <span className="text-xs font-bold uppercase tracking-widest text-sky-800 bg-sky-100 border border-sky-300 px-3 py-1 rounded-full">
             Super Admin
           </span>
-          <h1 className="text-3xl font-extrabold text-white mt-2">{user?.name}</h1>
-          <p className="text-gray-500 flex items-center gap-2 mt-1"><Mail size={14} />{user?.email}</p>
+          <h1 className="text-3xl font-black text-slate-900 mt-2">{user?.name}</h1>
+          <p className="text-slate-600 flex items-center gap-2 mt-1 font-medium"><Mail size={14} className="text-sky-600" />{user?.email}</p>
         </div>
         <div className="text-right hidden md:block">
-          <p className="text-xs text-gray-600">Platform</p>
-          <p className="text-2xl font-extrabold gradient-text">MaaCare</p>
-          <p className="text-xs text-gray-600 mt-1">Admin Control Panel</p>
+          <p className="text-xs text-slate-500 font-bold uppercase">Platform</p>
+          <p className="text-2xl font-black text-sky-700">MaaCare</p>
+          <p className="text-xs text-slate-600 mt-1 font-semibold">Admin Control Panel</p>
         </div>
       </motion.div>
 
       {/* ── STATS GRID ── */}
       <div>
-        <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-5">Platform Overview</h2>
+        <h2 className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-5">Platform Overview</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <StatCard icon={<Baby size={22} className="text-pink-400" />} label="Total Patients" value={stats?.totalPatients} color="bg-pink-500/10" />
-          <StatCard icon={<Stethoscope size={22} className="text-teal-400" />} label="Total Doctors" value={stats?.totalDoctors} color="bg-teal-500/10" />
-          <StatCard icon={<Calendar size={22} className="text-blue-400" />} label="Total Appointments" value={stats?.totalAppointments} color="bg-blue-500/10" />
-          <StatCard icon={<Clock size={22} className="text-yellow-400" />} label="Today's" value={stats?.todayAppointments} color="bg-yellow-500/10" />
-          <StatCard icon={<RefreshCw size={22} className="text-purple-400" />} label="Rescheduled" value={stats?.rescheduledAppointments} color="bg-purple-500/10" />
-          <StatCard icon={<XCircle size={22} className="text-red-400" />} label="Cancelled" value={stats?.cancelledAppointments} color="bg-red-500/10" />
+          <StatCard icon={<Baby size={22} className="text-pink-600" />} label="Total Patients" value={stats?.totalPatients} color="bg-pink-100" />
+          <StatCard icon={<Stethoscope size={22} className="text-sky-600" />} label="Total Doctors" value={stats?.totalDoctors} color="bg-sky-100" />
+          <StatCard icon={<Calendar size={22} className="text-indigo-600" />} label="Total Appointments" value={stats?.totalAppointments} color="bg-indigo-100" />
+          <StatCard icon={<Clock size={22} className="text-amber-600" />} label="Today's" value={stats?.todayAppointments} color="bg-amber-100" />
+          <StatCard icon={<RefreshCw size={22} className="text-purple-600" />} label="Rescheduled" value={stats?.rescheduledAppointments} color="bg-purple-100" />
+          <StatCard icon={<XCircle size={22} className="text-rose-600" />} label="Cancelled" value={stats?.cancelledAppointments} color="bg-rose-100" />
         </div>
       </div>
 
       {/* ── DOCTORS SECTION ── */}
       <div>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
-          <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <Stethoscope size={20} className="text-teal-400" /> Doctor Management
-            <span className="text-sm font-bold text-gray-500">({doctors.length})</span>
+          <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <Stethoscope size={20} className="text-sky-600" /> Doctor Management
+            <span className="text-sm font-bold text-slate-500">({doctors.length})</span>
           </h2>
           <div className="relative w-full sm:w-72">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />

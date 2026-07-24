@@ -54,15 +54,15 @@ const AshaWorkerDashboard = () => {
     const highRisk = assignments.filter(a => a.profile?.riskLevel === 'High');
 
     return (
-        <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="max-w-7xl mx-auto py-8 px-4 text-slate-800">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-white">ASHA Worker Dashboard</h1>
-                    <p className="text-gray-500 mt-1">Welcome, {user?.name}. Manage field visits and monitor assigned mothers.</p>
+                    <h1 className="text-3xl font-black text-slate-900">ASHA Worker Dashboard</h1>
+                    <p className="text-slate-600 mt-1">Welcome, <span className="font-bold text-sky-800">{user?.name}</span>. Manage field visits and monitor assigned mothers.</p>
                 </div>
                 <div className="flex gap-3">
-                    <a href="/chat" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/20 transition-all">
+                    <a href="/chat" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-sky-100 text-sky-800 border border-sky-300 hover:bg-sky-200 transition-all shadow-xs">
                         ✉️ Messages
                     </a>
                 </div>
@@ -71,16 +71,16 @@ const AshaWorkerDashboard = () => {
             {/* Stats strip */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 {[
-                    { icon: Users, label: 'Assigned Mothers', value: assignments.length, color: 'border-teal-500/30', text: 'text-teal-400' },
-                    { icon: Shield, label: 'High Risk', value: highRisk.length, color: 'border-red-500/30', text: 'text-red-400' },
-                    { icon: UserCheck, label: 'Visited', value: assignments.filter(a => a.lastVisitDate).length, color: 'border-green-500/30', text: 'text-green-400' },
-                    { icon: Bell, label: 'Next ANC Due', value: assignments.filter(a => a.nextAncWeek).length, color: 'border-blue-500/30', text: 'text-blue-400' },
+                    { icon: Users, label: 'Assigned Mothers', value: assignments.length, color: 'border-sky-300 bg-sky-50/80', text: 'text-sky-800' },
+                    { icon: Shield, label: 'High Risk', value: highRisk.length, color: 'border-rose-300 bg-rose-50/80', text: 'text-rose-700' },
+                    { icon: UserCheck, label: 'Visited', value: assignments.filter(a => a.lastVisitDate).length, color: 'border-emerald-300 bg-emerald-50/80', text: 'text-emerald-800' },
+                    { icon: Bell, label: 'Next ANC Due', value: assignments.filter(a => a.nextAncWeek).length, color: 'border-indigo-300 bg-indigo-50/80', text: 'text-indigo-800' },
                 ].map(s => {
                     const Icon = s.icon;
                     return (
                         <div key={s.label} className={`glass-card p-4 border ${s.color}`}>
-                            <div className="flex justify-between mb-2"><p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{s.label}</p><Icon size={16} className="text-gray-600" /></div>
-                            <p className={`text-3xl font-extrabold ${s.text}`}>{s.value}</p>
+                            <div className="flex justify-between mb-2"><p className="text-xs text-slate-600 font-bold uppercase tracking-wider">{s.label}</p><Icon size={16} className="text-slate-500" /></div>
+                            <p className={`text-3xl font-black ${s.text}`}>{s.value}</p>
                         </div>
                     );
                 })}
@@ -88,11 +88,11 @@ const AshaWorkerDashboard = () => {
 
             {/* High risk alert */}
             {highRisk.length > 0 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-start gap-3">
-                    <Activity size={18} className="text-red-400 shrink-0 mt-0.5" />
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6 p-4 bg-rose-100 border border-rose-300 rounded-2xl flex items-start gap-3">
+                    <Activity size={18} className="text-rose-600 shrink-0 mt-0.5" />
                     <div>
-                        <p className="font-bold text-red-400">⚠️ {highRisk.length} High-Risk Mother{highRisk.length > 1 ? 's' : ''} Need Immediate Attention</p>
-                        <p className="text-xs text-red-300/70 mt-0.5">{highRisk.map(a => a.assignment?.mother?.name).join(', ')}</p>
+                        <p className="font-bold text-rose-900">⚠️ {highRisk.length} High-Risk Mother{highRisk.length > 1 ? 's' : ''} Need Immediate Attention</p>
+                        <p className="text-xs text-rose-700 mt-0.5 font-medium">{highRisk.map(a => a.assignment?.mother?.name).join(', ')}</p>
                     </div>
                 </motion.div>
             )}
@@ -101,7 +101,7 @@ const AshaWorkerDashboard = () => {
             <div className="flex gap-2 mb-6">
                 {[['mothers', 'Assigned Mothers'], ['emergency', 'Emergency']].map(([id, label]) => (
                     <button key={id} onClick={() => setActiveTab(id)}
-                        className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === id ? 'bg-teal-600 text-white' : 'bg-white/5 border border-white/10 text-gray-500 hover:text-white'}`}>
+                        className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === id ? 'bg-sky-600 text-white shadow-sm' : 'bg-white border border-sky-200 text-slate-600 hover:text-sky-700 hover:bg-sky-50'}`}>
                         {label}
                     </button>
                 ))}
@@ -110,52 +110,52 @@ const AshaWorkerDashboard = () => {
             {activeTab === 'mothers' && (
                 <div className="space-y-4">
                     {assignments.length === 0 ? (
-                        <div className="glass-card p-14 text-center">
-                            <Users className="mx-auto h-14 w-14 text-gray-600 mb-4" />
-                            <p className="text-white font-bold mb-1">No assignments yet</p>
-                            <p className="text-sm text-gray-500">Admin will assign mothers once they register.</p>
+                        <div className="glass-card p-14 text-center border border-sky-200 bg-white/90">
+                            <Users className="mx-auto h-14 w-14 text-slate-400 mb-4" />
+                            <p className="text-slate-900 font-bold mb-1">No assignments yet</p>
+                            <p className="text-sm text-slate-500">Admin will assign mothers once they register.</p>
                         </div>
                     ) : assignments.map((a, idx) => {
                         const m = a.assignment?.mother;
                         const p = a.profile;
                         return (
                             <motion.div key={m?._id || idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
-                                className="glass-card">
+                                className="glass-card border border-sky-200 bg-white/90">
                                 <div className="p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-11 h-11 rounded-full bg-pink-500/20 flex items-center justify-center font-extrabold text-xl text-pink-400">
+                                        <div className="w-11 h-11 rounded-full bg-pink-100 border border-pink-300 flex items-center justify-center font-black text-xl text-pink-700">
                                             {m?.name?.[0]?.toUpperCase()}
                                         </div>
                                         <div>
-                                            <p className="font-extrabold text-white">{m?.name}</p>
-                                            <p className="text-xs text-gray-500">{m?.email}</p>
+                                            <p className="font-extrabold text-slate-900">{m?.name}</p>
+                                            <p className="text-xs text-slate-500">{m?.email}</p>
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap gap-2 items-center">
                                         {p?.riskLevel && <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${riskBadge(p.riskLevel)}`}>{p.riskLevel} Risk</span>}
-                                        {p?.pregnancyWeek && <span className="text-xs text-gray-400">Week {p.pregnancyWeek}</span>}
+                                        {p?.pregnancyWeek && <span className="text-xs text-slate-600 font-medium">Week {p.pregnancyWeek}</span>}
                                         <button onClick={() => setShowLogFor(showLogFor === idx ? null : idx)}
-                                            className="text-xs bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1">
+                                            className="text-xs bg-sky-100 border border-sky-300 text-sky-800 hover:bg-sky-200 px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1">
                                             <ClipboardList size={12} /> {showLogFor === idx ? 'Cancel' : 'Log Visit'}
                                         </button>
                                     </div>
                                 </div>
                                 {showLogFor === idx && (
-                                    <div className="border-t border-white/10 p-5">
+                                    <div className="border-t border-sky-100 p-5">
                                         <VisitLogForm motherId={m?._id} motherName={m?.name} token={token} onSaved={() => { setShowLogFor(null); fetchAssignments(); }} />
                                     </div>
                                 )}
                                 {p && (
-                                    <div className="border-t border-white/5 px-5 py-3 flex flex-wrap gap-5 text-xs text-gray-500">
-                                        {p.hemoglobin && <span>Hb: <strong className="text-white">{p.hemoglobin} g/dL</strong></span>}
-                                        {p.bmi && <span>BMI: <strong className="text-white">{p.bmi}</strong></span>}
-                                        {a.nextAncWeek && <span>Next ANC: <strong className="text-blue-400">Week {a.nextAncWeek}</strong></span>}
-                                        {a.lastVisitDate && <span>Last visited: <strong className="text-white">{new Date(a.lastVisitDate).toLocaleDateString('en-IN')}</strong></span>}
-                                        {!a.lastVisitDate && <span className="text-orange-400">⚠ Not yet visited</span>}
+                                    <div className="border-t border-sky-100 px-5 py-3 flex flex-wrap gap-5 text-xs text-slate-600">
+                                        {p.hemoglobin && <span>Hb: <strong className="text-slate-900">{p.hemoglobin} g/dL</strong></span>}
+                                        {p.bmi && <span>BMI: <strong className="text-slate-900">{p.bmi}</strong></span>}
+                                        {a.nextAncWeek && <span>Next ANC: <strong className="text-sky-700">Week {a.nextAncWeek}</strong></span>}
+                                        {a.lastVisitDate && <span>Last visited: <strong className="text-slate-900">{new Date(a.lastVisitDate).toLocaleDateString('en-IN')}</strong></span>}
+                                        {!a.lastVisitDate && <span className="text-amber-700 font-semibold">⚠ Not yet visited</span>}
 
                                         {/* Prescription links */}
                                         <button onClick={() => fetchPrescriptions(m?._id)}
-                                            className="ml-auto flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-bold transition-colors">
+                                            className="ml-auto flex items-center gap-1 text-sky-700 hover:text-sky-900 font-bold transition-colors">
                                             <FileText size={12} /> Prescriptions
                                         </button>
                                         {rxLoading[m?._id] && <span className="text-gray-600">Loading…</span>}

@@ -89,14 +89,14 @@ const HealthDashboard = () => {
     );
 
     return (
-        <div className="max-w-7xl mx-auto py-10 px-4">
+        <div className="max-w-7xl mx-auto py-8 px-4 text-slate-800">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-white">Health Dashboard</h1>
-                    <p className="text-gray-500 mt-1">Welcome back, {user?.name}. Your maternal health hub.</p>
+                    <h1 className="text-3xl font-black text-slate-900">Health Dashboard</h1>
+                    <p className="text-slate-600 mt-1">Welcome back, <span className="font-bold text-sky-800">{user?.name}</span>. Your maternal health hub.</p>
                 </div>
-                <Link to="/doctors" className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white px-5 py-2.5 rounded-xl font-bold transition-all text-sm">
+                <Link to="/doctors" className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all text-sm shadow-md shadow-sky-600/20">
                     <PlusCircle size={16} /> Book Appointment
                 </Link>
             </div>
@@ -105,15 +105,15 @@ const HealthDashboard = () => {
             {profile && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     {[
-                        { label: 'Pregnancy Week', value: `Week ${profile.pregnancyWeek}`, sub: `${40 - profile.pregnancyWeek} weeks to go`, color: 'border-pink-500/30' },
-                        { label: 'Risk Level', value: profile.riskLevel, sub: `Score: ${profile.riskScore}/100`, color: profile.riskLevel === 'High' ? 'border-red-500/30' : profile.riskLevel === 'Medium' ? 'border-yellow-500/30' : 'border-green-500/30' },
-                        { label: 'Next ANC Visit', value: nextAnc ? `Week ${nextAnc.visitWeek}` : 'All Done ✓', sub: nextAnc ? 'Upcoming check-up' : 'All visits complete', color: 'border-blue-500/30' },
-                        { label: 'Vaccines Pending', value: pendingVaccines, sub: `${vaccinations.length - pendingVaccines} completed`, color: 'border-purple-500/30' },
+                        { label: 'Pregnancy Week', value: `Week ${profile.pregnancyWeek}`, sub: `${40 - profile.pregnancyWeek} weeks to go`, color: 'border-pink-300 bg-pink-50/80' },
+                        { label: 'Risk Level', value: profile.riskLevel, sub: `Score: ${profile.riskScore}/100`, color: profile.riskLevel === 'High' ? 'border-rose-300 bg-rose-50/80' : profile.riskLevel === 'Medium' ? 'border-amber-300 bg-amber-50/80' : 'border-emerald-300 bg-emerald-50/80' },
+                        { label: 'Next ANC Visit', value: nextAnc ? `Week ${nextAnc.visitWeek}` : 'All Done ✓', sub: nextAnc ? 'Upcoming check-up' : 'All visits complete', color: 'border-sky-300 bg-sky-50/80' },
+                        { label: 'Vaccines Pending', value: pendingVaccines, sub: `${vaccinations.length - pendingVaccines} completed`, color: 'border-purple-300 bg-purple-50/80' },
                     ].map(s => (
                         <div key={s.label} className={`glass-card p-4 border ${s.color}`}>
-                            <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{s.label}</p>
-                            <p className="text-2xl font-extrabold text-white mt-1">{s.value}</p>
-                            <p className="text-xs text-gray-600 mt-0.5">{s.sub}</p>
+                            <p className="text-xs text-slate-600 font-bold uppercase tracking-wider">{s.label}</p>
+                            <p className="text-2xl font-black text-slate-900 mt-1">{s.value}</p>
+                            <p className="text-xs text-slate-500 mt-0.5 font-medium">{s.sub}</p>
                         </div>
                     ))}
                 </div>
@@ -125,7 +125,7 @@ const HealthDashboard = () => {
                     const Icon = t.icon;
                     return (
                         <button key={t.id} onClick={() => setActiveTab(t.id)}
-                            className={`flex items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition-all shrink-0 ${activeTab === t.id ? 'bg-teal-600 text-white' : 'bg-white/5 border border-white/10 text-gray-500 hover:text-white hover:bg-white/10'}`}>
+                            className={`flex items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition-all shrink-0 ${activeTab === t.id ? 'bg-sky-600 text-white shadow-sm' : 'bg-white border border-sky-200 text-slate-600 hover:text-sky-700 hover:bg-sky-50'}`}>
                             <Icon size={14} />{t.label}
                         </button>
                     );
@@ -138,27 +138,27 @@ const HealthDashboard = () => {
                 {activeTab === 'overview' && (
                     <div className="space-y-6">
                         {!profile ? (
-                            <div className="glass-card p-10 text-center">
-                                <Baby className="mx-auto h-14 w-14 text-pink-500/50 mb-4" />
-                                <h3 className="text-xl font-extrabold text-white mb-2">Create Your Pregnancy Profile</h3>
-                                <p className="text-gray-500 mb-6 max-w-md mx-auto">Set up your profile to unlock personalised risk scoring, nutrition plans, and ANC tracking.</p>
-                                <button onClick={() => setActiveTab('profile')} className="bg-pink-600 hover:bg-pink-500 text-white px-8 py-3 rounded-xl font-bold transition-all">
+                            <div className="glass-card p-10 text-center border border-sky-200 bg-white/90">
+                                <Baby className="mx-auto h-14 w-14 text-pink-500 mb-4" />
+                                <h3 className="text-xl font-extrabold text-slate-900 mb-2">Create Your Pregnancy Profile</h3>
+                                <p className="text-slate-600 mb-6 max-w-md mx-auto">Set up your profile to unlock personalised risk scoring, nutrition plans, and ANC tracking.</p>
+                                <button onClick={() => setActiveTab('profile')} className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-sm">
                                     Get Started →
                                 </button>
                             </div>
                         ) : (
                             <>
                                 {/* Pregnancy week bar */}
-                                <div className="glass-card p-6">
+                                <div className="glass-card p-6 border border-sky-200 bg-white/90">
                                     <div className="flex justify-between mb-3">
-                                        <span className="text-sm font-bold text-white">Pregnancy Progress — Week {profile.pregnancyWeek}</span>
-                                        <span className="text-sm text-gray-500">{weekProgress}%</span>
+                                        <span className="text-sm font-bold text-slate-900">Pregnancy Progress — Week {profile.pregnancyWeek}</span>
+                                        <span className="text-sm font-bold text-slate-600">{weekProgress}%</span>
                                     </div>
-                                    <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                                    <div className="h-3 bg-sky-100 rounded-full overflow-hidden">
                                         <motion.div initial={{ width: 0 }} animate={{ width: `${weekProgress}%` }} transition={{ duration: 1.2 }}
-                                            className="h-full rounded-full bg-gradient-to-r from-pink-600 to-rose-400" />
+                                            className="h-full rounded-full bg-gradient-to-r from-pink-500 to-rose-500" />
                                     </div>
-                                    <div className="flex justify-between text-xs text-gray-600 mt-1">
+                                    <div className="flex justify-between text-xs text-slate-500 mt-1 font-semibold">
                                         <span>Week 1</span><span>Week 40</span>
                                     </div>
                                 </div>
@@ -167,16 +167,16 @@ const HealthDashboard = () => {
                                 <RiskScoreCard score={profile.riskScore} level={profile.riskLevel} factors={profile.riskFactors || []} />
 
                                 {/* ANC summary */}
-                                <div className="glass-card p-6">
-                                    <h3 className="font-extrabold text-white mb-4 flex items-center gap-2"><CalendarDays size={18} className="text-blue-400" /> ANC Visit Status</h3>
+                                <div className="glass-card p-6 border border-sky-200 bg-white/90">
+                                    <h3 className="font-extrabold text-slate-900 mb-4 flex items-center gap-2"><CalendarDays size={18} className="text-sky-600" /> ANC Visit Status</h3>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                         {ANC_WEEKS.map(w => {
                                             const visit = ancVisits.find(v => v.visitWeek === w);
                                             const done = visit?.completed;
                                             return (
-                                                <div key={w} className={`p-4 rounded-2xl border text-center ${done ? 'bg-green-500/10 border-green-500/30' : 'bg-white/5 border-white/10'}`}>
-                                                    <p className={`text-2xl font-extrabold ${done ? 'text-green-400' : 'text-gray-400'}`}>W{w}</p>
-                                                    <p className="text-xs text-gray-500 mt-1">{done ? '✓ Done' : 'Pending'}</p>
+                                                <div key={w} className={`p-4 rounded-2xl border text-center ${done ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50 border-slate-200'}`}>
+                                                    <p className={`text-2xl font-black ${done ? 'text-emerald-700' : 'text-slate-600'}`}>W{w}</p>
+                                                    <p className="text-xs font-bold text-slate-600 mt-1">{done ? '✓ Done' : 'Pending'}</p>
                                                 </div>
                                             );
                                         })}

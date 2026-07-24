@@ -12,12 +12,12 @@ import TeleConsultCard from './TeleConsultCard';
 import { Link } from 'react-router-dom';
 
 const statusConfig = {
-  Pending: { color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20', dot: 'bg-yellow-400' },
-  Approved: { color: 'bg-green-500/10  text-green-400  border-green-500/20', dot: 'bg-green-400' },
-  Rejected: { color: 'bg-red-500/10    text-red-400    border-red-500/20', dot: 'bg-red-400' },
-  Cancelled: { color: 'bg-gray-500/10   text-gray-400   border-gray-500/20', dot: 'bg-gray-400' },
-  Completed: { color: 'bg-blue-500/10   text-blue-400   border-blue-500/20', dot: 'bg-blue-400' },
-  Rescheduled: { color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', dot: 'bg-purple-400' },
+  Pending: { color: 'bg-amber-100 text-amber-800 border-amber-300', dot: 'bg-amber-500' },
+  Approved: { color: 'bg-emerald-100 text-emerald-800 border-emerald-300', dot: 'bg-emerald-500' },
+  Rejected: { color: 'bg-rose-100 text-rose-800 border-rose-300', dot: 'bg-rose-500' },
+  Cancelled: { color: 'bg-slate-100 text-slate-700 border-slate-300', dot: 'bg-slate-400' },
+  Completed: { color: 'bg-sky-100 text-sky-800 border-sky-300', dot: 'bg-sky-500' },
+  Rescheduled: { color: 'bg-purple-100 text-purple-800 border-purple-300', dot: 'bg-purple-500' },
 };
 
 const DoctorDashboard = () => {
@@ -112,7 +112,7 @@ const DoctorDashboard = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4">
+    <div className="max-w-7xl mx-auto py-10 px-4 text-slate-800">
 
       {/* ── Reject Modal ── */}
       <AnimatePresence>
@@ -120,9 +120,9 @@ const DoctorDashboard = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
               className="glass-card-elevated p-8 w-full max-w-md">
-              <h3 className="text-xl font-bold text-red-400 mb-1">Reject Appointment</h3>
+              <h3 className="text-xl font-bold text-rose-800 mb-1">Reject Appointment</h3>
               <p className="text-sm text-gray-500 mb-1">ID: <span className="font-mono text-teal-400">{rejectTarget.appointmentId}</span></p>
-              <p className="text-sm text-gray-500 mb-4">Patient: <span className="text-white font-semibold">{rejectTarget.patientName}</span></p>
+              <p className="text-sm text-gray-500 mb-4">Patient: <span className="text-slate-800 font-semibold">{rejectTarget.patientName}</span></p>
               <textarea rows="3" value={rejectReason} onChange={e => setRejectReason(e.target.value)}
                 placeholder="Reason for rejection (required)" className="dark-input resize-none mb-5" />
               <div className="flex gap-3">
@@ -144,7 +144,7 @@ const DoctorDashboard = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
               className="glass-card-elevated p-8 w-full max-w-md">
-              <h3 className="text-xl font-bold text-white mb-1">Reschedule Appointment</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-1">Reschedule Appointment</h3>
               <p className="text-sm text-gray-500 mb-5">ID: <span className="font-mono text-teal-400">{rescheduleTarget.appointmentId}</span></p>
               <div className="space-y-4 mb-5">
                 <div>
@@ -182,7 +182,7 @@ const DoctorDashboard = () => {
           <span className="text-xs font-bold uppercase tracking-widest text-teal-400 bg-teal-500/10 border border-teal-500/20 px-3 py-1 rounded-full">
             {doctorProfile?.specialistType || 'Doctor'}
           </span>
-          <h1 className="text-3xl font-extrabold text-white mt-2">Dr. {user?.name}</h1>
+          <h1 className="text-3xl font-extrabold text-slate-800 mt-2">Dr. {user?.name}</h1>
           <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-500">
             <span className="flex items-center gap-1"><Mail size={13} />{user?.email}</span>
             {doctorProfile?.mobile && <span className="flex items-center gap-1"><Phone size={13} />{doctorProfile.mobile}</span>}
@@ -218,7 +218,7 @@ const DoctorDashboard = () => {
           return (
             <div key={status} className={`glass-card p-4 text-center cursor-pointer border ${activeTab === status ? cfg.color : 'border-white/10'}`}
               onClick={() => { setActiveTab(status); setActiveView('appointments'); }}>
-              <p className="text-2xl font-extrabold text-white">{count}</p>
+              <p className="text-2xl font-extrabold text-slate-800">{count}</p>
               <p className="text-xs text-gray-500 mt-1">{status}</p>
             </div>
           );
@@ -360,20 +360,20 @@ const DoctorDashboard = () => {
                           alt="Patient"
                         />
                         <div>
-                          <h3 className="font-bold text-lg text-white">{apt.patientName}</h3>
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
+                          <h3 className="font-bold text-lg text-slate-900">{apt.patientName}</h3>
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-sm text-slate-500">
                             <span className="flex items-center gap-1"><Mail size={12} />{apt.patientEmail}</span>
                             {apt.patientMobile && <span className="flex items-center gap-1"><Phone size={12} />{apt.patientMobile}</span>}
                             <span className="flex items-center gap-1"><CalIcon size={12} />{new Date(apt.date).toLocaleDateString('en-IN')}</span>
-                            <span className="flex items-center gap-1 text-teal-400 font-mono font-bold"><Hash size={12} />{apt.appointmentId}</span>
+                            <span className="flex items-center gap-1 text-sky-700 font-mono font-bold"><Hash size={12} />{apt.appointmentId}</span>
                           </div>
-                          <div className="flex gap-3 mt-2 text-xs text-gray-500">
-                            <span>Mode: <strong className="text-gray-300">{apt.mode}</strong></span>
-                            <span>Time: <strong className="text-gray-300">{apt.time}</strong></span>
-                            {apt.pregnancyMonth && <span>Preg. Month: <strong className="text-gray-300">{apt.pregnancyMonth}</strong></span>}
+                          <div className="flex gap-3 mt-2 text-xs text-slate-500">
+                            <span>Mode: <strong className="text-slate-800">{apt.mode}</strong></span>
+                            <span>Time: <strong className="text-slate-800">{apt.time}</strong></span>
+                            {apt.pregnancyMonth && <span>Preg. Month: <strong className="text-slate-800">{apt.pregnancyMonth}</strong></span>}
                           </div>
                           {apt.previousHealthProblem && (
-                            <p className="text-xs mt-2 text-gray-500 bg-white/5 border border-white/10 px-3 py-2 rounded-lg max-w-md">
+                            <p className="text-xs mt-2 text-slate-600 bg-sky-50/80 border border-sky-200 px-3 py-2 rounded-lg max-w-md">
                               <strong>Health Notes:</strong> {apt.previousHealthProblem}
                             </p>
                           )}

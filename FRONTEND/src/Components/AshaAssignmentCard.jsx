@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
-import { UserCheck, MapPin, Phone, CalendarDays, AlertCircle } from 'lucide-react';
+import { UserCheck, Phone, CalendarDays, ClipboardList } from 'lucide-react';
 
 const AshaAssignmentCard = () => {
     const { token } = useContext(AuthContext);
@@ -10,74 +10,77 @@ const AshaAssignmentCard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchInfo = async () => {
             try {
-                // Get ASHA assignments for this mother — check via my-visits
-                const logsRes = await axios.get(`${import.meta.env.VITE_API_URL}/asha/my-visits`, {
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/pregnancy/my-asha`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setVisitLogs(logsRes.data || []);
-                if (logsRes.data.length > 0) {
-                    setAssignment(logsRes.data[0].ashaWorker);
-                }
+                setAssignment(res.data.ashaWorker);
+                setVisitLogs(res.data.visitLogs || []);
             } catch { } finally { setLoading(false); }
         };
-        fetchData();
+        if (token) fetchInfo();
     }, [token]);
 
     if (loading) return (
-        <div className="glass-card p-5 flex items-center gap-3">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-teal-500" />
-            <span className="text-gray-500 text-sm">Loading ASHA info...</span>
+        <div className="glass-card p-5 border border-sky-200 bg-white/90">
+            <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-slate-200 h-10 w-10"></div>
+                <div className="flex-1 space-y-2 py-1">
+                    <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                </div>
+            </div>
         </div>
     );
 
     return (
-        <div className="glass-card p-5">
-            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-white/10">
-                <div className="bg-green-500/20 border border-green-500/30 p-2.5 rounded-xl">
-                    <UserCheck size={20} className="text-green-400" />
+        <div className="glass-card p-5 border border-sky-200 bg-white/90">
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-sky-100">
+                <div className="bg-emerald-100 border border-emerald-300 p-2.5 rounded-xl">
+                    <UserCheck size={20} className="text-emerald-700" />
                 </div>
                 <div>
-                    <h3 className="font-extrabold text-white">ASHA Worker</h3>
-                    <p className="text-xs text-gray-500">Your community health worker</p>
+                    <h3 className="font-extrabold text-slate-900">ASHA Worker</h3>
+                    <p className="text-xs text-slate-500 font-medium">Your community health worker</p>
                 </div>
             </div>
 
             {assignment ? (
                 <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 font-extrabold text-lg">
+                        <div className="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-emerald-800 font-black text-lg">
                             {assignment.name?.[0]?.toUpperCase()}
                         </div>
                         <div>
-                            <p className="font-bold text-white">{assignment.name}</p>
-                            <p className="text-xs text-gray-500">{assignment.email}</p>
+                            <p className="font-bold text-slate-900">{assignment.name}</p>
+                            <p className="text-xs text-slate-500">{assignment.email}</p>
                         </div>
                     </div>
 
                     {visitLogs.length > 0 && (
-                        <div className="mt-3 p-3 bg-white/5 rounded-xl border border-white/10">
-                            <p className="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Last Visit</p>
-                            <p className="text-sm text-white font-bold">{new Date(visitLogs[0].visitDate).toLocaleDateString('en-IN', { dateStyle: 'long' })}</p>
+                        <div className="mt-3 p-3 bg-sky-50/80 rounded-xl border border-sky-200">
+                            <p className="text-xs font-bold text-slate-600 mb-2 uppercase tracking-wider">Last Visit</p>
+                            <p className="text-sm text-slate-900 font-bold">{new Date(visitLogs[0].visitDate).toLocaleDateString('en-IN', { dateStyle: 'long' })}</p>
                             {visitLogs[0].nextVisitDate && (
-                                <p className="text-xs text-teal-400 mt-1 flex items-center gap-1">
+                                <p className="text-xs text-sky-800 font-bold mt-1 flex items-center gap-1">
                                     <CalendarDays size={11} /> Next visit: {new Date(visitLogs[0].nextVisitDate).toLocaleDateString('en-IN', { dateStyle: 'medium' })}
                                 </p>
                             )}
                             {visitLogs[0].observations && (
-                                <p className="text-xs text-gray-500 mt-1.5 italic">"{visitLogs[0].observations}"</p>
+                                <p className="text-xs text-slate-600 mt-1.5 italic">"{visitLogs[0].observations}"</p>
                             )}
                         </div>
                     )}
 
-                    <p className="text-xs text-gray-600 flex items-center gap-1"><AlertCircle size={11} /> {visitLogs.length} visit{visitLogs.length !== 1 ? 's' : ''} recorded</p>
+                    <a href="/chat" className="mt-3 w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs">
+                        <ClipboardList size={13} /> Message ASHA Worker
+                    </a>
                 </div>
             ) : (
-                <div className="text-center py-4">
-                    <MapPin size={28} className="text-gray-600 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">No ASHA worker assigned yet.</p>
-                    <p className="text-xs text-gray-600 mt-1">Contact your nearest health centre or ask your doctor.</p>
+                <div className="text-center py-4 text-slate-500 text-sm">
+                    <p className="font-medium">No ASHA worker assigned yet.</p>
+                    <p className="text-xs text-slate-500 mt-1">An ASHA worker will be assigned to your area by the admin.</p>
                 </div>
             )}
         </div>

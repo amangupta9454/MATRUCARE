@@ -134,17 +134,16 @@ const Doctors = () => {
                     />
                 )}
             </AnimatePresence>
-
             {/* Header */}
-            <div className="max-w-7xl mx-auto mb-12 text-center">
+            <div className="max-w-7xl mx-auto text-center mb-12">
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                    <span className="inline-block text-xs font-bold text-teal-400 bg-teal-500/10 border border-teal-500/20 px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
+                    <span className="inline-block text-xs font-bold text-sky-800 bg-sky-100 border border-sky-300 px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest">
                         Verified Specialists
                     </span>
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                    <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">
                         Find Your <span className="gradient-text">Specialist</span>
                     </h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                    <p className="text-slate-600 max-w-2xl mx-auto text-lg font-normal">
                         Connect with India's top maternal healthcare professionals. Get expert care for every stage of motherhood.
                     </p>
                 </motion.div>
@@ -153,13 +152,13 @@ const Doctors = () => {
             {/* Search + Filters */}
             <div className="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row gap-4 items-center">
                 <div className="relative w-full md:w-96">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                     <input
                         type="text"
                         placeholder="Search by name or specialization..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3.5 rounded-2xl outline-none text-white placeholder-gray-500 dark-input"
+                        className="w-full pl-12 pr-4 py-3.5 rounded-2xl outline-none text-slate-800 placeholder-slate-400 bg-white border border-sky-200 focus:ring-2 focus:ring-sky-500 shadow-xs"
                     />
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-1 w-full md:w-auto custom-scrollbar">
@@ -168,8 +167,8 @@ const Doctors = () => {
                             key={spec}
                             onClick={() => setSelectedSpecialty(spec)}
                             className={`whitespace-nowrap px-5 py-2.5 rounded-xl font-bold text-sm transition-all border ${selectedSpecialty === spec
-                                ? 'bg-teal-600 border-teal-500 text-white shadow-lg shadow-teal-500/20'
-                                : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white'
+                                ? 'bg-sky-600 border-sky-500 text-white shadow-md shadow-sky-600/20'
+                                : 'bg-white border-sky-200 text-slate-600 hover:bg-sky-50 hover:text-sky-700'
                                 }`}
                         >
                             {spec}
@@ -180,67 +179,70 @@ const Doctors = () => {
 
             {/* Gender filter */}
             <div className="max-w-7xl mx-auto mb-6 flex items-center gap-3">
-                <span className="text-xs text-gray-500 font-bold uppercase tracking-wider flex items-center gap-1"><User size={12} /> Doctor Gender:</span>
+                <span className="text-xs text-slate-600 font-bold uppercase tracking-wider flex items-center gap-1"><User size={12} /> Doctor Gender:</span>
                 {['Any', 'Female', 'Male'].map(g => (
                     <button key={g} onClick={() => setGenderFilter(g)}
-                        className={`px-3 py-1 rounded-lg text-xs font-bold border transition-all ${genderFilter === g ? 'bg-teal-600 border-teal-500 text-white' : 'bg-white/5 border-white/10 text-gray-500 hover:text-white'}`}>
+                        className={`px-3 py-1 rounded-lg text-xs font-bold border transition-all ${genderFilter === g ? 'bg-sky-600 border-sky-500 text-white shadow-xs' : 'bg-white border-sky-200 text-slate-600 hover:text-sky-700'}`}>
                         {g === 'Female' ? '👩 Female' : g === 'Male' ? '👨 Male' : '🌐 Any'}
                     </button>
                 ))}
-                <Link to="/recommended-doctors" className="ml-auto flex items-center gap-1 text-xs text-teal-400 hover:text-teal-300 font-bold transition-colors">
-                    <Sparkles size={12} /> Smart Recommendations →
+                <Link to="/recommended-doctors" className="ml-auto flex items-center gap-1 text-xs text-sky-700 hover:text-sky-900 font-bold transition-colors">
+                    ✨ Recommended Doctors →
                 </Link>
             </div>
 
-            {/* Doctors Grid */}
+            {/* Doctor Grid */}
             <div className="max-w-7xl mx-auto">
                 {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div key={i} className="h-64 rounded-3xl bg-slate-200/50 animate-pulse border border-sky-200"></div>
+                        ))}
                     </div>
-                ) : sortedDoctors.length === 0 ? (
-                    <div className="text-center py-20 glass-card">
-                        <p className="text-gray-500 text-lg">No doctors found.</p>
-                        {doctors.length === 0 && <p className="text-gray-600 text-sm mt-2">Doctors will appear here once they complete their profile.</p>}
+                ) : filteredDoctors.length === 0 ? (
+                    <div className="glass-card text-center py-16 border border-sky-200 bg-white/90">
+                        <Stethoscope className="mx-auto h-16 w-16 text-slate-400 mb-4 opacity-50" />
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">No Doctors Found</h3>
+                        <p className="text-slate-600">Try searching for a different specialty or clear your filter.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {sortedDoctors.map((doc, idx) => (
+                        {filteredDoctors.map((doc) => (
                             <motion.div
                                 key={doc._id}
-                                initial={{ opacity: 0, y: 20 }}
+                                layout
+                                initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.07 }}
-                                className="glass-card overflow-hidden flex flex-col group hover:border-teal-500/30 transition-all duration-300"
+                                className="tilt-card glass-card rounded-3xl overflow-hidden border border-sky-200 bg-white/90 shadow-md flex flex-col group hover:border-sky-300 transition-all"
                             >
-                                {/* Card Top */}
-                                <div className="p-6 flex gap-5 items-start">
+                                {/* Card Header */}
+                                <div className="p-6 pb-4 flex gap-4 items-start">
                                     <div className="relative shrink-0">
                                         <img
                                             src={doc.user?.profileImage?.url || `https://api.dicebear.com/7.x/initials/svg?seed=${doc.user?.name}`}
                                             alt={doc.user?.name}
-                                            className="w-20 h-20 rounded-2xl object-cover border border-white/10 group-hover:scale-105 transition-transform duration-300"
+                                            className="w-20 h-20 rounded-2xl object-cover border border-sky-200 shadow-xs group-hover:scale-105 transition-transform duration-300"
                                         />
-                                        <span className="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-[#060d14] flex items-center justify-center">
+                                        <span className="absolute -bottom-1 -right-1 bg-emerald-500 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center">
                                             <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                                         </span>
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h2 className="font-bold text-lg text-white truncate">Dr. {doc.user?.name}</h2>
-                                        <p className="text-teal-400 text-sm font-medium flex items-center gap-1 mt-0.5">
+                                        <h2 className="font-extrabold text-lg text-slate-900 truncate">Dr. {doc.user?.name}</h2>
+                                        <p className="text-sky-700 text-sm font-bold flex items-center gap-1 mt-0.5">
                                             <BriefcaseMedical size={13} /> {doc.specialistType || doc.specialization || 'Specialist'}
                                         </p>
-                                        <p className="text-gray-500 text-xs mt-1 truncate">
+                                        <p className="text-slate-500 text-xs mt-1 truncate font-medium">
                                             {doc.qualifications?.length > 0 ? doc.qualifications.join(', ') : 'MBBS'}
                                         </p>
                                         <div className="flex gap-2 mt-3 flex-wrap">
                                             {doc.experienceYears > 0 && (
-                                                <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-gray-300 flex items-center gap-1">
-                                                    <Star size={10} className="text-yellow-400 fill-current" /> {doc.experienceYears} Yrs
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-sky-50 border border-sky-200 text-slate-700 flex items-center gap-1">
+                                                    <Star size={10} className="text-amber-500 fill-amber-400" /> {doc.experienceYears} Yrs
                                                 </span>
                                             )}
                                             {doc.consultationFee > 0 && (
-                                                <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-300">
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800">
                                                     ₹{doc.consultationFee}
                                                 </span>
                                             )}
@@ -249,16 +251,16 @@ const Doctors = () => {
                                 </div>
 
                                 {/* Card Info */}
-                                <div className="px-6 pb-4 space-y-2 flex-1 border-t border-white/5 pt-4">
+                                <div className="px-6 pb-4 space-y-2 flex-1 border-t border-sky-100 pt-4">
                                     {doc.currentOrganization && (
-                                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                                            <Building2 size={13} className="text-gray-600 shrink-0" />
+                                        <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
+                                            <Building2 size={13} className="text-sky-600 shrink-0" />
                                             <span className="truncate">{doc.currentOrganization}</span>
                                         </div>
                                     )}
                                     {doc.availableDays?.length > 0 && (
-                                        <div className="flex items-center gap-2 text-xs text-gray-500">
-                                            <Calendar size={13} className="text-gray-600 shrink-0" />
+                                        <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
+                                            <Calendar size={13} className="text-sky-600 shrink-0" />
                                             <span className="truncate">{doc.availableDays.join(', ')}</span>
                                         </div>
                                     )}
@@ -267,18 +269,18 @@ const Doctors = () => {
                                 {/* Actions */}
                                 <div className="p-4 pt-0 flex gap-3">
                                     {doc.mobile && (
-                                        <a href={`tel:${doc.mobile}`} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-teal-400 hover:bg-teal-500/10 hover:border-teal-500/30 transition-all shrink-0">
+                                        <a href={`tel:${doc.mobile}`} className="w-10 h-10 flex items-center justify-center rounded-xl bg-sky-50 border border-sky-200 text-sky-700 hover:bg-sky-100 transition-all shrink-0">
                                             <Phone size={16} />
                                         </a>
                                     )}
                                     <Link to={`/doctors/${doc._id}/reviews`}
-                                        className="flex items-center justify-center px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-yellow-400 hover:border-yellow-500/30 transition-all text-xs font-bold gap-1">
-                                        <Star size={12} className="fill-yellow-400" />
+                                        className="flex items-center justify-center px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100 transition-all text-xs font-bold gap-1">
+                                        <Star size={12} className="fill-amber-400 text-amber-400" />
                                         {reviewStats[doc._id]?.avgRating?.toFixed(1) || '—'}
                                     </Link>
                                     <button
                                         onClick={() => handleBookClick(doc)}
-                                        className="flex-1 bg-teal-600 hover:bg-teal-500 text-white py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-teal-500/20 transition-all"
+                                        className="flex-1 bg-sky-600 hover:bg-sky-700 text-white py-2.5 rounded-xl font-bold text-sm shadow-md shadow-sky-600/20 transition-all"
                                     >
                                         Book Appointment
                                     </button>
