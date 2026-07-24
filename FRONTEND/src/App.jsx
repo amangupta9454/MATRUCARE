@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
 import About from './Pages/About';
@@ -35,6 +35,7 @@ import Admin from './Components/Admin';
 import VoiceNavigator from './Components/VoiceNavigator';
 import { AuthContext } from './Components/AuthContext';
 import { useContext } from 'react';
+import { HeartPulse, Phone, Mail, MapPin, Shield, Stethoscope, Activity } from 'lucide-react';
 
 // --- New Feature Pages ---
 import InsuranceDashboard from './Pages/InsuranceDashboard';
@@ -51,10 +52,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 const App = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-[#030712] text-white">
+      <div className="min-h-screen bg-[#f0f7ff] text-slate-800 flex flex-col font-sans">
         <Navbar />
         <VoiceNavigator />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8 flex-grow">
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
@@ -107,6 +108,77 @@ const App = () => {
 
           </Routes>
         </main>
+
+        {/* Hospital Light White-Blue Footer */}
+        <footer className="bg-gradient-to-b from-white to-sky-50 border-t border-sky-100 mt-16 pt-12 pb-8 text-slate-700">
+          <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            <div>
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="bg-sky-600 text-white p-2.5 rounded-xl shadow-md shadow-sky-600/20">
+                  <HeartPulse size={22} />
+                </div>
+                <span className="text-2xl font-black bg-gradient-to-r from-sky-700 to-teal-700 bg-clip-text text-transparent">
+                  MaaCare
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                Empowering mothers with AI-driven healthcare, verified specialists, and 24/7 emergency response support.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-sky-700 bg-sky-100/80 px-3 py-1.5 rounded-full w-fit">
+                <Shield size={14} /> Certified Hospital Ecosystem
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-extrabold uppercase tracking-wider text-sky-900 mb-4">Quick Links</h4>
+              <ul className="space-y-2.5 text-sm">
+                <li><Link to="/about" className="hover:text-sky-600 transition-colors">About MaaCare</Link></li>
+                <li><Link to="/doctors" className="hover:text-sky-600 transition-colors">Find Doctors</Link></li>
+                <li><Link to="/hospitals" className="hover:text-sky-600 transition-colors">Hospital Network</Link></li>
+                <li><Link to="/schemes" className="hover:text-sky-600 transition-colors">Government Schemes</Link></li>
+                <li><Link to="/forum" className="hover:text-sky-600 transition-colors">Community Forum</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-extrabold uppercase tracking-wider text-sky-900 mb-4">Maternal Services</h4>
+              <ul className="space-y-2.5 text-sm">
+                <li><Link to="/teleconsult" className="hover:text-sky-600 transition-colors">Tele-Consultation</Link></li>
+                <li><Link to="/health-dashboard" className="hover:text-sky-600 transition-colors">Pregnancy Tracker</Link></li>
+                <li><Link to="/baby-dashboard" className="hover:text-sky-600 transition-colors">Baby Vaccination</Link></li>
+                <li><Link to="/passport" className="hover:text-sky-600 transition-colors">Health Passport QR</Link></li>
+                <li><Link to="/contact" className="hover:text-sky-600 transition-colors">Contact Support</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-extrabold uppercase tracking-wider text-sky-900 mb-4">Emergency & Contact</h4>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-2.5 text-slate-700">
+                  <Phone size={16} className="text-sky-600" />
+                  <span>24/7 Helpline: 1800-MAACARE</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-slate-700">
+                  <Mail size={16} className="text-sky-600" />
+                  <span>support@maacare.com</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-slate-700">
+                  <MapPin size={16} className="text-sky-600" />
+                  <span>National Health Hub, India</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container mx-auto px-4 border-t border-sky-200/60 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+            <p>© {new Date().getFullYear()} MaaCare Health Platform. All rights reserved.</p>
+            <div className="flex items-center gap-6">
+              <Link to="/about" className="hover:text-sky-600 transition-colors">Privacy Policy</Link>
+              <Link to="/about" className="hover:text-sky-600 transition-colors">Terms of Service</Link>
+              <Link to="/contact" className="hover:text-sky-600 transition-colors">Hospital Portal</Link>
+            </div>
+          </div>
+        </footer>
       </div>
     </Router>
   );

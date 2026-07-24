@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Fingerprint, Save, Activity, Heart, Syringe, User } from 'lucide-react';
-import Navbar from '../Components/Navbar';
 import HealthPassportQR from '../Components/HealthPassportQR';
 
 const HealthPassport = () => {
@@ -87,10 +86,8 @@ const HealthPassport = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200">
-            <Navbar />
-
-            <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+        <div className="min-h-screen text-slate-800">
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
                 <div className="text-center mb-12">
                     <div className="inline-flex items-center justify-center p-4 bg-sky-500/20 text-sky-400 rounded-2xl mb-4">
                         <Fingerprint size={32} />

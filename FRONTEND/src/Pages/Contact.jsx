@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { Mail, Send, Loader2, CheckCircle2 } from 'lucide-react';
+import { Mail, Send, Loader2, CheckCircle2, PhoneCall, Building2 } from 'lucide-react';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +24,6 @@ const Contact = () => {
         setError('');
 
         try {
-            // Getform Endpoint from environment variable
             const endpoint = import.meta.env.VITE_GETFORM_ENDPOINT;
 
             if (!endpoint) {
@@ -48,40 +47,40 @@ const Contact = () => {
     };
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center p-4">
+        <div className="min-h-[80vh] flex items-center justify-center p-4 text-slate-800">
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-2xl bg-white/80 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 border border-white/40 dark:border-gray-700"
+                className="w-full max-w-2xl glass-card-elevated p-8 md:p-12 border border-sky-200"
             >
-                <div className="flex items-center justify-center mb-8">
-                    <div className="bg-teal-100 dark:bg-teal-900/50 p-4 rounded-full">
-                        <Mail className="w-10 h-10 text-teal-600 dark:text-teal-400" />
+                <div className="flex items-center justify-center mb-6">
+                    <div className="bg-sky-100 p-4 rounded-2xl border border-sky-200 text-sky-600 shadow-xs">
+                        <Mail className="w-10 h-10" />
                     </div>
                 </div>
 
-                <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-2">
-                    Get in Touch
+                <h2 className="text-3xl font-black text-center text-slate-900 mb-2 tracking-tight">
+                    Get in Touch with <span className="gradient-text">Hospital Support</span>
                 </h2>
-                <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
-                    Have a question or need assistance? Send us a message!
+                <p className="text-center text-slate-500 mb-8 text-sm">
+                    Have a query, emergency escalation, or hospital partnership inquiry? Reach out to our team.
                 </p>
 
                 {success ? (
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4"
+                        className="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl flex flex-col items-center justify-center text-center space-y-4"
                     >
-                        <CheckCircle2 className="w-16 h-16 text-green-500" />
-                        <h3 className="text-xl font-bold text-green-800 dark:text-green-300">Message Sent!</h3>
-                        <p className="text-green-600 dark:text-green-400">
-                            Thank you for reaching out. We will get back to you shortly.
+                        <CheckCircle2 className="w-16 h-16 text-emerald-600" />
+                        <h3 className="text-xl font-extrabold text-emerald-900">Message Sent!</h3>
+                        <p className="text-emerald-700 text-sm">
+                            Thank you for reaching out. Our clinical support team will respond shortly.
                         </p>
                         <button
                             onClick={() => setSuccess(false)}
-                            className="mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full font-medium transition-colors"
+                            className="mt-4 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-sm shadow-md transition-colors"
                         >
                             Send Another Message
                         </button>
@@ -89,60 +88,60 @@ const Contact = () => {
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Full Name</label>
                                 <input
                                     type="text"
                                     name="name"
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                                    placeholder="John Doe"
+                                    className="dark-input"
+                                    placeholder="Sarah Jenkins"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Email Address</label>
                                 <input
                                     type="email"
                                     name="email"
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                                    placeholder="john@example.com"
+                                    className="dark-input"
+                                    placeholder="sarah@example.com"
                                 />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Subject</label>
                             <input
                                 type="text"
                                 name="subject"
                                 required
                                 value={formData.subject}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                                placeholder="How can we help you?"
+                                className="dark-input"
+                                placeholder="How can we assist your care journey?"
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Message</label>
                             <textarea
                                 name="message"
                                 required
-                                rows="5"
+                                rows="4"
                                 value={formData.message}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all resize-none"
-                                placeholder="Write your message here..."
+                                className="dark-input resize-none"
+                                placeholder="Write your message or detailed inquiry here..."
                             ></textarea>
                         </div>
 
                         {error && (
-                            <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm">
+                            <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-sm">
                                 {error}
                             </div>
                         )}
@@ -150,7 +149,7 @@ const Contact = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-teal-500/30 transform hover:-translate-y-0.5 transition-all outline-none disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                            className="w-full flex items-center justify-center space-x-2 bg-sky-600 hover:bg-sky-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-sky-600/20 transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:transform-none"
                         >
                             {loading ? (
                                 <>

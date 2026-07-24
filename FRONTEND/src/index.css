@@ -17,43 +17,56 @@
 
 @layer base {
   body {
-    @apply antialiased text-white;
-    background-color: #030712;
-    /* Deeper dark */
+    @apply antialiased text-slate-800;
+    background-color: #f0f7ff;
+    /* Hospital Light theme background with soft white-blue glow */
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(20, 184, 166, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(2, 132, 199, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 85% 85%, rgba(13, 148, 136, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 15% 50%, rgba(56, 189, 248, 0.06) 0%, transparent 60%);
     min-height: 100vh;
   }
 
-  /* Glass card component */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+  /* Glass card component with Hospital Light White-Blue Tilt style */
+  .glass-card, .tilt-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 247, 255, 0.88) 100%);
+    border: 1px solid rgba(186, 230, 253, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 1.5rem;
-    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 
-  .glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  .glass-card:hover, .tilt-card:hover {
+    transform: perspective(1000px) translateY(-6px) rotateX(3deg) rotateY(-2deg) scale(1.015);
+    border-color: rgba(56, 189, 248, 0.9);
+    box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.18), 0 8px 24px rgba(2, 132, 199, 0.08);
   }
 
   .glass-card-elevated {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
+    background: linear-gradient(145deg, #ffffff 0%, rgba(238, 246, 255, 0.95) 100%);
+    border: 1px solid rgba(186, 230, 253, 0.9);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     border-radius: 1.5rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px -10px rgba(14, 165, 233, 0.14), 0 8px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 
-  /* Gradient teal text */
+  .glass-card-elevated:hover {
+    transform: perspective(1000px) translateY(-4px) rotateX(2deg) rotateY(-1deg);
+    border-color: rgba(2, 132, 199, 0.5);
+    box-shadow: 0 25px 60px -12px rgba(14, 165, 233, 0.22);
+  }
+
+  /* Hospital Gradient text */
   .gradient-text {
-    background: linear-gradient(135deg, #14b8a6, #818cf8);
+    background: linear-gradient(135deg, #0284c7, #0d9488);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -61,36 +74,38 @@
 
   /* Custom scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
+    background: rgba(14, 165, 233, 0.25);
+    border-radius: 3px;
   }
 
-  /* Input style for dark contexts */
-  .dark-input {
-    @apply w-full px-4 py-3 rounded-xl text-white placeholder-gray-600 outline-none transition-all;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Form input style for Light Hospital theme */
+  .dark-input, .light-input {
+    @apply w-full px-4 py-3 rounded-xl text-slate-800 placeholder-slate-400 outline-none transition-all;
+    background: #ffffff;
+    border: 1px solid rgba(186, 230, 253, 0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
   }
 
-  .dark-input:focus {
-    border-color: rgba(20, 184, 166, 0.5);
-    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  .dark-input:focus, .light-input:focus {
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    background: #ffffff;
   }
 
-  /* Fix native select/option background on dark theme */
+  /* Fix native select/option background on light theme */
   select option {
-    background-color: #0f1f2e;
-    color: #e2e8f0;
+    background-color: #ffffff;
+    color: #0f172a;
   }
 
-  /* Dark calendar/time picker */
+  /* Calendar/time picker styling */
   input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="time"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.7);
+    filter: none;
     cursor: pointer;
   }
 }

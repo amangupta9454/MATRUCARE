@@ -70,27 +70,27 @@ const Register = () => {
     };
 
     const inputCls = "dark-input";
-    const labelCls = "text-xs font-bold text-gray-400 uppercase tracking-wider";
+    const labelCls = "text-xs font-bold text-slate-700 uppercase tracking-wider";
 
     return (
-        <div className="min-h-[85vh] flex items-center justify-center p-4 py-12">
+        <div className="min-h-[85vh] flex items-center justify-center p-4 py-12 text-slate-800">
             <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-full max-w-2xl glass-card-elevated p-8 md:p-12"
+                className="w-full max-w-2xl glass-card-elevated p-8 md:p-12 border border-sky-200"
             >
                 <div className="flex flex-col items-center mb-8">
-                    <div className="bg-teal-500/20 border border-teal-500/30 p-4 rounded-2xl mb-4">
-                        <HeartPulse className="w-8 h-8 text-teal-400" />
+                    <div className="bg-sky-100 border border-sky-200 p-4 rounded-2xl mb-4 text-sky-600 shadow-xs">
+                        <HeartPulse className="w-8 h-8" />
                     </div>
-                    <h2 className="text-3xl font-extrabold text-white">Create Account</h2>
-                    <p className="text-gray-500 mt-2 text-sm text-center">Join the MaaCare maternal healthcare ecosystem.</p>
+                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Create Account</h2>
+                    <p className="text-slate-500 mt-1.5 text-sm text-center">Join the MaaCare maternal healthcare ecosystem.</p>
                 </div>
 
                 {error && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm flex items-start gap-2">
+                        className="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-sm flex items-start gap-2">
                         <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                         <span>{error}</span>
                     </motion.div>
@@ -113,7 +113,7 @@ const Register = () => {
                             <label className={labelCls}>Password</label>
                             <div className="relative">
                                 <input type={showPassword ? 'text' : 'password'} name="password" required value={formData.password} onChange={handleChange} className={`${inputCls} pr-12`} placeholder="••••••••" />
-                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors">
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                                     {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                                 </button>
                             </div>
@@ -122,7 +122,7 @@ const Register = () => {
                             <label className={labelCls}>Confirm Password</label>
                             <div className="relative">
                                 <input type={showConfirmPassword ? 'text' : 'password'} name="confirmPassword" required value={formData.confirmPassword} onChange={handleChange} className={`${inputCls} pr-12`} placeholder="••••••••" />
-                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors">
+                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                                     {showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                                 </button>
                             </div>
@@ -149,9 +149,9 @@ const Register = () => {
 
                     <div className="space-y-1.5">
                         <label className={labelCls}>Profile Image (Optional)</label>
-                        <label className="flex flex-col items-center justify-center w-full h-28 border border-dashed border-white/20 rounded-xl cursor-pointer bg-white/5 hover:bg-white/10 transition-colors">
-                            <UploadCloud className="w-7 h-7 mb-2 text-gray-500" />
-                            <p className="text-sm text-gray-500 font-medium">
+                        <label className="flex flex-col items-center justify-center w-full h-28 border border-dashed border-sky-300 rounded-xl cursor-pointer bg-sky-50/50 hover:bg-sky-50 transition-colors">
+                            <UploadCloud className="w-7 h-7 mb-2 text-sky-600" />
+                            <p className="text-sm text-slate-600 font-medium">
                                 {profileImage ? profileImage.name : 'Click to upload photo (SVG, PNG, JPG)'}
                             </p>
                             <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
@@ -161,15 +161,15 @@ const Register = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-teal-500/20 transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:transform-none"
+                        className="w-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-sky-600/20 transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:transform-none"
                     >
                         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><UserPlus size={18} /> Create Account</>}
                     </button>
                 </form>
 
-                <p className="mt-7 text-center text-sm text-gray-500">
+                <p className="mt-7 text-center text-sm text-slate-500 font-medium">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-teal-400 font-bold hover:underline">Sign In</Link>
+                    <Link to="/login" className="text-sky-700 font-bold hover:underline">Sign In</Link>
                 </p>
             </motion.div>
         </div>

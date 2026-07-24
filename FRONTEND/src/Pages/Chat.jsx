@@ -3,7 +3,6 @@ import axios from 'axios';
 import { AuthContext } from '../Components/AuthContext';
 import { io } from 'socket.io-client';
 import { Send, Globe2, Loader2, ArrowLeft } from 'lucide-react';
-import Navbar from '../Components/Navbar';
 import { Link } from 'react-router-dom';
 
 const LANGUAGES = [
@@ -134,9 +133,7 @@ const Chat = () => {
 
     return (
         <div className="min-h-screen pb-0 flex flex-col">
-            <Navbar />
-
-            <div className="flex-1 max-w-6xl w-full mx-auto p-4 pt-24 flex h-[calc(100vh-80px)]">
+            <div className="flex-1 max-w-6xl w-full mx-auto p-4 pt-4 flex h-[calc(100vh-100px)]">
 
                 {/* Sidebar - Contacts */}
                 <div className={`w-full md:w-1/3 flex flex-col glass-card border-r-0 md:border-r border-white/10 rounded-r-none md:rounded-l-2xl ${activeContact ? 'hidden md:flex' : 'flex'}`}>

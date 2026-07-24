@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Trophy, Star, CheckCircle, Flame, ArrowRight, ShieldCheck } from 'lucide-react';
-import Navbar from '../Components/Navbar';
 
 const Education = () => {
     const [questions, setQuestions] = useState([]);
@@ -79,15 +78,13 @@ const Education = () => {
         }
     };
 
-    if (loading) return <div className="min-h-screen pt-24 pb-12 px-4 flex justify-center"><div className="animate-spin w-12 h-12 border-b-2 border-teal-500 rounded-full"></div></div>;
+    if (loading) return <div className="min-h-screen pt-12 pb-12 px-4 flex justify-center"><div className="animate-spin w-12 h-12 border-b-2 border-sky-600 rounded-full"></div></div>;
 
     const currentQ = questions[currentIdx];
 
     return (
         <div className="min-h-screen pb-12">
-            <Navbar />
-
-            <div className="max-w-4xl mx-auto pt-24 px-4">
+            <div className="max-w-4xl mx-auto pt-6 px-4">
 
                 {/* Progress Header */}
                 <div className="glass-card mb-8 p-6 flex flex-col md:flex-row justify-between items-center gap-6">

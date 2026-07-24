@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, CheckCircle2, ShieldAlert } from 'lucide-react';
-import Navbar from '../Components/Navbar';
 import InsuranceCard from '../Components/InsuranceCard';
 import InsuranceForm from '../Components/InsuranceForm';
 
@@ -79,10 +78,9 @@ const InsuranceDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white font-sans selection:bg-sky-500/30">
-            <Navbar />
+        <div className="min-h-screen text-slate-800">
 
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                     <div>
