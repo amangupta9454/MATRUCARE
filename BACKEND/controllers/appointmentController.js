@@ -108,6 +108,7 @@ exports.bookAppointment = async (req, res) => {
 // @route   GET /api/appointments
 exports.getAppointments = async (req, res) => {
   try {
+    const AshaAssignment = require('../models/AshaAssignment');
     let appointments;
 
     if (req.user.role === 'Mother') {
@@ -116,9 +117,29 @@ exports.getAppointments = async (req, res) => {
         .sort({ 'createdAt': -1 });
     } else if (req.user.role === 'Doctor') {
       const doctor = await Doctor.findOne({ user: req.user._id });
-      appointments = await Appointment.find({ doctor: doctor._id })
+      if (!doctor) {
+        return res.json([]);
+      }
+      const rawAppointments = await Appointment.find({ doctor: doctor._id })
         .populate('mother', 'name email profileImage')
-        .sort({ 'createdAt': -1 });
+        .sort({ 'createdAt': -1 })
+        .lean();
+      
+      const motherIds = rawAppointments.map(a => a.mother?._id).filter(Boolean);
+      const assignments = await AshaAssignment.find({ mother: { $in: motherIds } })
+        .populate('ashaWorker', 'name');
+      
+      const ashaMap = {};
+      assignments.forEach(a => {
+        if (a.mother) ashaMap[a.mother.toString()] = a.ashaWorker?.name;
+      });
+
+      appointments = rawAppointments.map(a => {
+        if (a.mother && ashaMap[a.mother._id.toString()]) {
+          a.assignedAshaName = ashaMap[a.mother._id.toString()];
+        }
+        return a;
+      });
     } else {
       // Admin sees all
       appointments = await Appointment.find({})
@@ -274,8 +295,8 @@ exports.cancelAppointment = async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
           <h2 style="color: #008080;">Appointment Cancelled</h2>
-          <p>Dear Dr. ${appointment.doctor.user.name},</p>
-          <p>The appointment scheduled on ${new Date(appointment.date).toLocaleDateString()} at ${appointment.time} by ${appointment.patientName} has been cancelled.</p>
+          <p>Dear Dr. ${appointment.doctor.user?.name || 'Doctor'},</p>
+          <p>The appointment scheduled on ${new Date(appointment.date).toLocaleDateString()} at ${appointment.time} by ${appointment.patientName || appointment.mother?.name || 'Patient'} has been cancelled.</p>
           ${reason ? `<p>Reason: ${reason}</p>` : ''}
           <p>Regards,<br/>MaaCare Team</p>
         </div>

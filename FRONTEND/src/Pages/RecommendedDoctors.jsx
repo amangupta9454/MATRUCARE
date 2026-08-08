@@ -33,8 +33,12 @@ const RecommendedDoctors = ({ limit }) => {
                 ...(loc && { location: loc }),
             });
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/recommendations?${params}`);
-            setDoctors(limit ? data.slice(0, limit) : data);
-        } catch { } finally { setLoading(false); }
+            if (Array.isArray(data)) {
+                setDoctors(limit ? data.slice(0, limit) : data);
+            } else {
+                setDoctors([]);
+            }
+        } catch { setDoctors([]); } finally { setLoading(false); }
     };
 
     useEffect(() => { fetchDoctors(); }, []);

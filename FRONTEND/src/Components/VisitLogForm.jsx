@@ -18,6 +18,9 @@ const VisitLogForm = ({ motherId, motherName, token, onSaved }) => {
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+    const [otp, setOtp] = useState('');
+    const [otpSent, setOtpSent] = useState(false);
+    const [sendingOtp, setSendingOtp] = useState(false);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [offlinePending, setOfflinePending] = useState(0);
 
@@ -56,6 +59,20 @@ const VisitLogForm = ({ motherId, motherName, token, onSaved }) => {
         if (synced > 0) setSuccess(`${synced} offline visit(s) synced successfully!`);
     };
 
+    const handleSendOtp = async () => {
+        setSendingOtp(true);
+        setError(''); setSuccess('');
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/asha/send-visit-otp`, { motherId }, { headers: { Authorization: `Bearer ${token}` } });
+            setOtpSent(true);
+            setSuccess('OTP sent to mother\'s email!');
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to send OTP');
+        } finally {
+            setSendingOtp(false);
+        }
+    };
+
     const handleSubmit = async e => {
         e.preventDefault();
         setSaving(true); setError(''); setSuccess('');
@@ -72,11 +89,13 @@ const VisitLogForm = ({ motherId, motherName, token, onSaved }) => {
         }
 
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/asha/log-visit`, form, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/asha/log-visit`, { ...form, otp }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSuccess('Visit logged successfully! Summary sent to doctor.');
             setForm(f => ({ ...f, bloodPressure: '', weight: '', hemoglobin: '', observations: '', recommendations: '', nextVisitDate: '' }));
+            setOtp('');
+            setOtpSent(false);
             if (onSaved) onSaved();
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to log visit');
@@ -115,6 +134,18 @@ const VisitLogForm = ({ motherId, motherName, token, onSaved }) => {
                 <div className="space-y-1.5"><label className={lbl}>Observations</label><textarea name="observations" rows="2" placeholder="Any notable health observations..." value={form.observations} onChange={handleChange} className={`${inp} resize-none`} /></div>
                 <div className="space-y-1.5"><label className={lbl}>Recommendations</label><textarea name="recommendations" rows="2" placeholder="Advice given to mother..." value={form.recommendations} onChange={handleChange} className={`${inp} resize-none`} /></div>
                 <div className="space-y-1.5"><label className={lbl}>Next Visit Date</label><input type="date" name="nextVisitDate" value={form.nextVisitDate} onChange={handleChange} className={inp} /></div>
+
+                {isOnline && (
+                    <div className="space-y-1.5 p-4 border border-blue-200 bg-blue-50/50 rounded-xl">
+                        <label className={lbl}>Verification OTP (Required)</label>
+                        <div className="flex gap-2">
+                            <input type="text" required={isOnline} value={otp} onChange={e => setOtp(e.target.value)} placeholder="Enter 6-digit OTP" className={inp} />
+                            <button type="button" onClick={handleSendOtp} disabled={sendingOtp} className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold rounded-xl whitespace-nowrap transition-colors">
+                                {sendingOtp ? 'Sending...' : otpSent ? 'Resend OTP' : 'Send OTP'}
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <div className="flex gap-3 pt-1">
                     <button type="submit" disabled={saving} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-70">

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar as CalendarIcon, Clock, PlusCircle, X, Hash, RefreshCw, AlertCircle, HeartPulse, Hospital, Baby, FileText, Video } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, PlusCircle, X, Hash, RefreshCw, AlertCircle, HeartPulse, Hospital, Baby, FileText, Video, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import SubmitFeedback from './SubmitFeedback';
@@ -20,6 +20,7 @@ const statusConfig = {
 const MotherDashboard = () => {
     const { user, token } = useContext(AuthContext);
     const [appointments, setAppointments] = useState([]);
+    const [motherSchedule, setMotherSchedule] = useState([]);
     const [loading, setLoading] = useState(true);
     const [cancelTarget, setCancelTarget] = useState(null);
     const [cancelReason, setCancelReason] = useState('');
@@ -30,12 +31,26 @@ const MotherDashboard = () => {
     const [newTime, setNewTime] = useState('');
     const [rescheduleLoading, setRescheduleLoading] = useState(false);
 
+    const [scheduleDate, setScheduleDate] = useState('');
+    const [scheduleTime, setScheduleTime] = useState('');
+    const [scheduleLoading, setScheduleLoading] = useState(false);
+    const [scheduleError, setScheduleError] = useState('');
+
+    const [assignableAshas, setAssignableAshas] = useState([]);
+    const [rebookTarget, setRebookTarget] = useState(null);
+    const [rebookAshaId, setRebookAshaId] = useState('');
+    const [rebookLoading, setRebookLoading] = useState(false);
+
     const fetchAppointments = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/appointments`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setAppointments(res.data);
+            const [aptRes, scheduleRes, assignableRes] = await Promise.all([
+                axios.get(`${import.meta.env.VITE_API_URL}/appointments`, { headers: { Authorization: `Bearer ${token}` } }),
+                axios.get(`${import.meta.env.VITE_API_URL}/asha/mother-schedule`, { headers: { Authorization: `Bearer ${token}` } }).catch(() => ({ data: [] })),
+                axios.get(`${import.meta.env.VITE_API_URL}/asha/assignable-users`, { headers: { Authorization: `Bearer ${token}` } }).catch(() => ({ data: { ashaWorkers: [] } }))
+            ]);
+            setAppointments(aptRes.data);
+            setMotherSchedule(scheduleRes.data || []);
+            setAssignableAshas(assignableRes.data?.ashaWorkers || []);
         } catch (err) {
             console.error('Failed to fetch appointments:', err);
         } finally {
@@ -82,6 +97,46 @@ const MotherDashboard = () => {
             alert(err.response?.data?.message || 'Reschedule failed.');
         } finally {
             setRescheduleLoading(false);
+        }
+    };
+
+    const handleScheduleAsha = async (e) => {
+        e.preventDefault();
+        if (!scheduleDate || !scheduleTime) return;
+        setScheduleLoading(true); setScheduleError('');
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/asha/schedule-visit`,
+                { date: scheduleDate, time: scheduleTime },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setScheduleDate(''); setScheduleTime('');
+            fetchAppointments();
+            alert('ASHA visit scheduled successfully!');
+        } catch (err) {
+            setScheduleError(err.response?.data?.message || 'Failed to schedule visit.');
+        } finally {
+            setScheduleLoading(false);
+        }
+    };
+
+    const handleRebookAsha = async (e) => {
+        e.preventDefault();
+        setRebookLoading(true);
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/asha/schedule-visit`,
+                { date: rebookTarget.date.split('T')[0], time: rebookTarget.time, alternateAshaId: rebookAshaId },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setRebookTarget(null);
+            setRebookAshaId('');
+            fetchAppointments();
+            alert('Alternative ASHA visit scheduled successfully!');
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to schedule alternative visit.');
+        } finally {
+            setRebookLoading(false);
         }
     };
 
@@ -149,6 +204,36 @@ const MotherDashboard = () => {
                 )}
             </AnimatePresence>
 
+            {/* Rebook Modal */}
+            <AnimatePresence>
+                {rebookTarget && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
+                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+                            className="glass-card-elevated p-8 w-full max-w-md border border-amber-200">
+                            <h3 className="text-xl font-extrabold text-slate-900 mb-2">Rebook ASHA Worker</h3>
+                            <p className="text-sm text-slate-600 mb-5">Original Date: <strong className="text-slate-800">{new Date(rebookTarget.date).toLocaleDateString('en-IN')}</strong> at {rebookTarget.time}</p>
+                            <form onSubmit={handleRebookAsha}>
+                                <div className="mb-5">
+                                    <label className="text-xs font-bold text-slate-700 uppercase mb-1 block">Select Available ASHA</label>
+                                    <select value={rebookAshaId} onChange={e => setRebookAshaId(e.target.value)} required className={inputCls}>
+                                        <option value="">-- Choose ASHA Worker --</option>
+                                        {assignableAshas.map(a => (
+                                            <option key={a._id} value={a._id}>{a.name} ({a.email})</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button type="button" onClick={() => setRebookTarget(null)} className="flex-1 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-colors">Cancel</button>
+                                    <button type="submit" disabled={rebookLoading || !rebookAshaId} className="flex-1 py-3 rounded-xl font-bold bg-amber-600 hover:bg-amber-700 text-white disabled:opacity-70 transition-colors shadow-sm">
+                                        {rebookLoading ? 'Booking...' : 'Confirm Rebook'}
+                                    </button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                 <div>
@@ -207,6 +292,90 @@ const MotherDashboard = () => {
                         </Link>
                     </div>
 
+                    {/* ASHA Worker Schedule & Request Form */}
+                    <div className="glass-card p-6 border border-emerald-200 bg-emerald-50/50 mb-8">
+                        <h3 className="font-extrabold text-emerald-900 text-lg mb-4 flex items-center gap-2">
+                            <User size={20} className="text-emerald-600" /> ASHA Worker Home Visits
+                        </h3>
+                        
+                        {/* The Request Form */}
+                        <div className="bg-white/80 p-5 rounded-xl border border-emerald-100 mb-6">
+                            <h4 className="text-sm font-bold text-teal-800 mb-3 flex items-center gap-2">
+                                <PlusCircle size={16} /> Request New Visit
+                            </h4>
+                            <form onSubmit={handleScheduleAsha} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Date</label>
+                                    <input type="date" required min={new Date().toISOString().split('T')[0]} max={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} value={scheduleDate} onChange={e => setScheduleDate(e.target.value)} className={inputCls} />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Time</label>
+                                    <input type="time" required value={scheduleTime} onChange={e => setScheduleTime(e.target.value)} className={inputCls} />
+                                </div>
+                                <div className="sm:col-span-2 md:col-span-1">
+                                    <button type="submit" disabled={scheduleLoading || !scheduleDate || !scheduleTime} className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md disabled:opacity-50">
+                                        {scheduleLoading ? 'Scheduling...' : 'Schedule Visit'}
+                                    </button>
+                                </div>
+                            </form>
+                            {scheduleError && (
+                                <div className="mt-3 text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-200 flex items-center gap-2">
+                                    <AlertCircle size={16} /> {scheduleError}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* The Upcoming Visits */}
+                        <h4 className="text-sm font-bold text-emerald-800 mb-3">Upcoming Visits</h4>
+                        {motherSchedule.length > 0 ? (
+                            <div className="space-y-3">
+                                {motherSchedule.map((s) => {
+                                    const isCancelled = s.status === 'Cancelled';
+                                    return (
+                                        <div key={s._id} className={`bg-white/80 p-4 rounded-xl border flex flex-col md:flex-row justify-between md:items-center gap-3 ${isCancelled ? 'border-rose-200 bg-rose-50/30' : 'border-emerald-100'}`}>
+                                            <div className="flex gap-4 items-center">
+                                                <img src={s.ashaWorker?.profileImage?.url || 'https://i.pravatar.cc/60?img=5'} alt="ASHA" className={`w-12 h-12 rounded-full border object-cover ${isCancelled ? 'border-rose-200 grayscale' : 'border-emerald-200'}`} />
+                                                <div>
+                                                    <p className={`font-bold ${isCancelled ? 'text-rose-800 line-through decoration-rose-300' : 'text-slate-800'}`}>{s.ashaWorker?.name}</p>
+                                                    {s.doctor ? (
+                                                        <p className="text-sm text-slate-600 flex items-center gap-1"><Hospital size={14} /> Scheduled by Dr. {s.doctor?.name || 'Hospital'}</p>
+                                                    ) : (
+                                                        <p className="text-sm text-slate-600 flex items-center gap-1"><User size={14} /> Scheduled by You</p>
+                                                    )}
+                                                    {s.location && (
+                                                        <p className="text-xs text-slate-500 mt-1">Location: {s.location}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="text-left md:text-right">
+                                                <p className={`text-sm font-bold bg-white/50 border px-3 py-1.5 rounded-lg inline-block ${isCancelled ? 'text-rose-700 border-rose-200' : 'text-emerald-700 border-emerald-200'}`}>
+                                                    {new Date(s.date).toLocaleDateString('en-IN')} at {s.time}
+                                                </p>
+                                                <p className={`text-xs mt-1.5 font-medium flex items-center md:justify-end gap-1 ${isCancelled ? 'text-rose-600' : 'text-slate-500'}`}>
+                                                    <Clock size={12} /> Status: {s.status}
+                                                </p>
+                                                {isCancelled && (
+                                                    <button 
+                                                        onClick={() => setRebookTarget(s)}
+                                                        className="mt-3 text-[11px] font-bold bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg shadow-sm transition-all"
+                                                    >
+                                                        Rebook Alternative ASHA
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center p-8 bg-white/50 rounded-xl border border-emerald-100 border-dashed">
+                                <HeartPulse className="mx-auto h-8 w-8 text-emerald-300 mb-2" />
+                                <p className="text-emerald-900 font-bold mb-1">No upcoming ASHA visits</p>
+                                <p className="text-xs text-emerald-700">Schedule one using the form above.</p>
+                            </div>
+                        )}
+                    </div>
+
                     {/* The Diet Planner */}
                     <DietPlanner />
                 </div>
@@ -230,10 +399,12 @@ const MotherDashboard = () => {
                     <span className="bg-sky-100 text-sky-800 border border-sky-300 text-xs font-bold px-3 py-1 rounded-full">{appointments.length} Total</span>
                 </div>
 
+                {/* Doctor Appointments List */}
+
                 {appointments.length === 0 ? (
                     <div className="p-12 text-center text-slate-500">
                         <CalendarIcon className="mx-auto h-12 w-12 text-slate-400 mb-4" />
-                        <p className="text-lg text-slate-600">No appointments yet.</p>
+                        <p className="text-lg text-slate-600">No doctor appointments yet.</p>
                         <Link to="/doctors" className="text-sky-700 font-bold mt-2 inline-block hover:underline">Browse Doctors →</Link>
                     </div>
                 ) : (

@@ -14,6 +14,7 @@ const Register = () => {
         confirmPassword: '',
         role: 'Mother',
         specialization: '',
+        region: '',
     });
     const [profileImage, setProfileImage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -48,6 +49,9 @@ const Register = () => {
             data.append('role', formData.role);
             if (formData.role === 'Doctor') {
                 data.append('specialization', formData.specialization);
+            }
+            if (formData.role === 'ASHA') {
+                data.append('region', formData.region);
             }
             if (profileImage) {
                 data.append('profileImage', profileImage);
@@ -143,6 +147,12 @@ const Register = () => {
                             <div className="space-y-1.5">
                                 <label className={labelCls}>Specialization</label>
                                 <input type="text" name="specialization" required value={formData.specialization} onChange={handleChange} className={inputCls} placeholder="E.g., Gynecologist" />
+                            </div>
+                        )}
+                        {formData.role === 'ASHA' && (
+                            <div className="space-y-1.5">
+                                <label className={labelCls}>Region / Location</label>
+                                <input type="text" name="region" required value={formData.region} onChange={handleChange} className={inputCls} placeholder="E.g., North District, Delhi" />
                             </div>
                         )}
                     </div>

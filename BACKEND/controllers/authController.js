@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Doctor = require('../models/Doctor');
 const OTPVerification = require('../models/OTPVerification');
+const Asha = require('../models/Asha');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary');
@@ -19,7 +20,7 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, role, specialization } = req.body;
+        const { name, email, password, role, specialization, region } = req.body;
 
         // Check if user exists
         let user = await User.findOne({ email });
@@ -54,6 +55,14 @@ exports.register = async (req, res) => {
             await Doctor.create({
                 user: user._id,
                 specialization: specialization || 'General Physician',
+            });
+        }
+
+        // If role is ASHA, create Asha profile
+        if (role === 'ASHA') {
+            await Asha.create({
+                user: user._id,
+                region: region || 'Unknown',
             });
         }
 
